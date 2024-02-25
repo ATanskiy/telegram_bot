@@ -1,9 +1,10 @@
 from datetime import datetime
 from telegram import Update
 from telegram.ext import CallbackContext
-from Constants import TMDB_API_KEY, text_for_user_start, list_of_commands
+from Constants import TMDB_API_KEY, text_for_user_start, list_of_commands, system_promt, TMDB_LINK, start_help_message
 import requests
 import replicate
+import time
 
 
 # The start function
@@ -15,7 +16,7 @@ async def help_command(update, context):
     # A dictionary with commands and their descriptions
     commands_with_descriptions = list_of_commands
     # Constructing the help message with command descriptions
-    help_message = 'Shalom :) Here are the available commands:\n\n'
+    help_message = start_help_message
     for command, description in commands_with_descriptions.items():
         help_message += f'{command}: {description}\n'
     # Sending the help message to the user
@@ -32,21 +33,6 @@ async def text_response(update, context)->str:
         await start_command(update, context)
     else:
         await llama2(update, context, text)
-
-async def llama2(update, context, text)->str:
-    output = replicate.run(
-        "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
-        input={
-            "prompt": text
-        }
-    )
-    output_text = ""
-    # The meta/llama-2-70b-chat model can stream output as it's running.
-    # The predict method returns an iterator, and you can iterate over that output.
-    for item in output:
-        # https://replicate.com/meta/llama-2-70b-chat/api#output-schema
-        output_text += str(item)
-    await update.message.reply_text(output_text)
 
 #The datetime now function
 async def datetime_command(update: Update, context: CallbackContext) -> None:
@@ -98,7 +84,7 @@ async def get_quote(update, context):
 #TMDB functionality
 # Function to get the latest movie releases from TMDb
 def get_latest_movies():
-    base_url = 'https://api.themoviedb.org/3/movie/now_playing'
+    base_url = TMDB_LINK
     params = {'api_key': TMDB_API_KEY, 'language': 'en-US', 'page': 1}
 
     response = requests.get(base_url, params=params)
@@ -132,3 +118,22 @@ async def movies_command(update, context):
 
         # Send the error message to the user
         await update.message.reply_text(movie_message)
+
+async def llama2(update, context, text)->str:
+    output = replicate.run(
+        "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
+        input={
+            "prompt": text,
+            "system_promt": system_promt,
+            "max_new_tokens": 800,
+
+        }
+    )
+    output_text = ""
+    for item in output:
+        output_text += str(item)
+    await update.message.reply_text(output_text)
+    # for char in output_text:
+    #     print(char, end='', flush=True)
+    #     time.sleep(0.05)
+    # print()
