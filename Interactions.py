@@ -5,7 +5,7 @@ from Constants import TMDB_API_KEY, text_for_user_start, list_of_commands, syste
 import requests
 import replicate
 import time
-
+#model = [1,2,3] here load the model
 
 # The start function
 async def start_command(update: Update, context: CallbackContext):
@@ -137,3 +137,6 @@ async def llama2(update, context, text)->str:
     #     print(char, end='', flush=True)
     #     time.sleep(0.05)
     # print()
+
+def get_llm_model():
+    return [1,2,3]
