@@ -1,6 +1,6 @@
 import Constants as keys
 from telegram.ext import *
-from Interactions import datetime_command, start_command, help_command, text_response, get_quote, movies_command, get_llm_model, model
+from Interactions import datetime_command, start_command, help_command, text_response, get_quote, movies_command #, get_llm_model, model
 
 if __name__ == "__main__":
 
