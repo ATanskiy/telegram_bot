@@ -1,4 +1,3 @@
-import Constants as keys
 from telegram.ext import *
 from Interactions import datetime_command, start_command, help_command, text_response, get_quote, movies_command, API_KEY
 
