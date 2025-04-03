@@ -1,12 +1,12 @@
 import Constants as keys
 from telegram.ext import *
-from Interactions import datetime_command, start_command, help_command, text_response, get_quote, movies_command #, get_llm_model, model
+from Interactions import datetime_command, start_command, help_command, text_response, get_quote, movies_command, API_KEY
 
 if __name__ == "__main__":
 
     print("Starting the bot")
     # here I need to load the model one time model = get_llm_model()
-    app = Application.builder().token(keys.API_KEY).build()
+    app = Application.builder().token(API_KEY).build()
     app.add_handler(CommandHandler('start', start_command))
     app.add_handler(CommandHandler('help', help_command))
     app.add_handler(CommandHandler('time', datetime_command))
