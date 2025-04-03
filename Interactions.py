@@ -1,10 +1,21 @@
 from datetime import datetime
 from telegram import Update
 from telegram.ext import CallbackContext
-from Constants import TMDB_API_KEY, text_for_user_start, list_of_commands, system_promt, TMDB_LINK, start_help_message
+from Constants import text_for_user_start, list_of_commands, system_promt, start_help_message
+from dotenv import load_dotenv
 import requests
 import replicate
+import os
 import time
+
+load_dotenv()
+
+# Access the secrets
+API_KEY = os.getenv('API_KEY')
+TMDB_LINK = os.getenv('TMDB_LINK')
+TMDB_API_KEY = os.getenv('TMDB_API_KEY')
+
+
 #model = [1,2,3] here load the model
 
 # The start function
